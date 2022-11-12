@@ -6,9 +6,6 @@ from pybdm_insee.tools.insee import _insee_data, DATA_PATH as dpath
 
 
 def insee_modalites_as_dataframe():
-    with open(dpath.joinpath('insee_modalites_2022.json'), 'r') as fp :
-        mods = json.load(fp)
-
     data = _insee_data()
     idb = data["idbank"]
 
@@ -113,7 +110,7 @@ class modalitesHelper:
         pd.DataFrame: the sliced dataframe filtered on the given columns & values
         """
         self.df = filter_modalites(data=filter_data, no_var=filter_no_var, var_value=filter_var_value)
-        self.descriptions = pd.read_csv(dpath.joinpath("202211_liste_variables_modalites.csv"), sep=";")
+        self.descriptions = pd.read_csv(dpath.joinpath("202211_liste_variables_modalites.csv.gz"), sep =";", compression={'method': 'gzip'})
 
     def filter(
         self,

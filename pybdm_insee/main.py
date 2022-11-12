@@ -105,6 +105,10 @@ def fetch(idbank, mod, out, clifmt, format, sep, ask):
                 matches = find_closest_idbank(idbank)
                 click.secho('NB: Here are the closest 5 idbanks, use `ask` to figure what they are ;)', fg='green', bold=True, err=True)
                 click.echo(matches)
+    else:
+        ctx = click.get_current_context()
+        click.echo(ctx.get_help())
+        ctx.exit()
 
 cli.add_command(fetch)
 cli.add_command(ask)
