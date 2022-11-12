@@ -1,21 +1,23 @@
 import click
 import json
-import sys
+import os, sys
 import pandas as pd
 from subprocess import call
 from importlib.util import find_spec
+from rich import pretty
+
+pretty.install()
 
 from pybdm_insee.tools.insee import (
     process_xml_output,
     insee_bdm_get, process_xml_output,
-    _insee_data, idb_exists, find_closest_idbank
+    idb_exists, find_closest_idbank
 )
 
-from pybdm_insee.installs.poetry_install import run_poetry_install
+from pybdm_insee.tools.dataframes import modalitesHelper as modHelp
 
-
-obj = process_xml_output(insee_bdm_get("001656506"))
-df = pd.DataFrame.from_records(obj["series"])
+from pybdm_insee.tools.find import _get_package_dir
+# from pybdm_insee.installs.poetry_install import run_poetry_install
 
 def echo_json_pager(json_series):
     def _generate_output():
@@ -36,21 +38,29 @@ def cli():
 
 @cli.command()
 def ask():
-    click.echo('Nothing :/')
+    pd.set_option('expand_frame_repr', False)
+    hlp = modHelp()
 
 @cli.command()
 @click.argument('pkg')
 def install(pkg):
     click.secho(f'Attempting to install package {pkg}...', fg="blue")
-    if pkg == 'spacy':
-        try:
-            # cmdline = ["python", "-m", "spacy", "download", "en_core_web_md"]
-            # call(cmdline, shell=True, executable=sys.executable)
-            from spacy.cli.download import download
-            download("en_core_web_md")
-        except Exception as e:
-            click.secho(f"Please install Poetry at https://python-poetry.org/docs/", fg="yellow", bold=True, err=True)
-            raise e
+    pass
+
+@cli.command()
+@click.argument("var")
+def set(var):
+    if var.lower() in ['path','p', 'syspath']:
+    _path = _get_package_dir("pybdm_insee")
+    
+    try:
+        sys.path.append(_path)
+    except SystemError as sysE:
+        click.secho('WARNING: cli format incorrect !', fg='red', blink=True, bold=True, err=True)
+        raise sysE(f"Couldn't set variable {var} !")
+    finally:
+        click.secho(f'Successfully set variable {var}', fg='green')
+
 
 @cli.command()
 @click.option('--idbank', default=0,

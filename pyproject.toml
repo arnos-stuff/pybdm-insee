@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pybdm-insee"
-version = "0.1.5"
+version = "0.1.7"
 description = ""
 authors = ["Arno's Stuff <bcda0276@gmail.com>"]
 readme = "README.md"
@@ -20,6 +20,7 @@ lxml = "^4.9.1"
 click = "^8.1.3"
 colorama = "^0.4.6"
 spacy = {version = "^3.4.3", optional = true}
+rich = "^12.6.0"
 
 [tool.poetry.scripts]
 insee = "pybdm_insee.main:cli"

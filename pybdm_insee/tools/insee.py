@@ -27,9 +27,9 @@ def _insee_idb_data_url(idbank: str):
 @cache
 def _insee_data(translate=True):
     res = {
-        "variables" : pd.read_csv(DATA_PATH.joinpath("202211_liste_variables_modalites.csv"), sep =";", compression={'method': 'gzip'}),
-        "naf" : pd.read_csv(DATA_PATH.joinpath("naf2008-listes-completes-5-niveaux.csv"), sep =";", compression={'method': 'gzip'}),
-        "idbank": pd.read_csv(DATA_PATH.joinpath("202211_correspondance_idbank_dimension.csv"), sep =";", compression={'method': 'gzip'})
+        "variables" : pd.read_csv(DATA_PATH.joinpath("202211_liste_variables_modalites.csv.gz"), sep =";", compression={'method': 'gzip'}),
+        "naf" : pd.read_csv(DATA_PATH.joinpath("naf2008-listes-completes-5-niveaux.csv.gz"), sep =";", compression={'method': 'gzip'}),
+        "idbank": pd.read_csv(DATA_PATH.joinpath("202211_correspondance_idbank_dimension.csv.gz"), sep =";", compression={'method': 'gzip'})
     }
     return res
 
