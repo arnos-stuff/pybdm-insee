@@ -5,6 +5,9 @@ description = ""
 authors = ["Arno's Stuff <bcda0276@gmail.com>"]
 readme = "README.md"
 packages = [{include = "pybdm_insee"}]
+include = [
+    {path = "data"}
+]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -20,7 +23,7 @@ insee = "pybdm_insee.main:cli"
 
 [[tool.poetry.source]]
 name = "py"
-url = "https://pypi.example.org/simple/"
+url = "https://pypi.org/project/pybdm-insee"
 default = false
 secondary = false
 
