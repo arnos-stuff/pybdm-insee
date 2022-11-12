@@ -2,7 +2,7 @@
 name = "pybdm-insee"
 version = "0.1.0"
 description = ""
-authors = ["Your Name <you@example.com>"]
+authors = ["Arno's Stuff <bcda0276@gmail.com>"]
 readme = "README.md"
 packages = [{include = "pybdm_insee"}]
 
@@ -17,6 +17,12 @@ colorama = "^0.4.6"
 [tool.poetry.scripts]
 insee = "pybdm_insee.main:cli"
 
+
+[[tool.poetry.source]]
+name = "py"
+url = "https://pypi.example.org/simple/"
+default = false
+secondary = false
 
 [build-system]
 requires = ["poetry-core"]
