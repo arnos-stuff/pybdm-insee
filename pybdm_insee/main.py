@@ -1,11 +1,11 @@
 import click
 import json
-import difflib
+import pandas as pd
 
 from pybdm_insee.tools.insee import (
     process_xml_output,
     insee_bdm_get, process_xml_output,
-    _insee_data, idb_exists
+    _insee_data, idb_exists, find_closest_idbank
 )
 
 
@@ -20,13 +20,20 @@ def echo_json_pager(json_series):
 
 @click.group()
 def cli():
+    """
+    Hi ! This is a small CLI and python toolbox to help people query INSEE databases easily.
+    Two commands as of the latest release:
+
+    - ask : opens a prompt and helps the user figure out which series they are interested in through iterative querying\n
+    - fetch : uses either the IDBANK identifiers, or the so-called "modality" values to identify the series, fetches them and saves or display them.
+    """
     pass
 
-@click.command()
+@cli.command()
 def ask():
     click.echo('Nothing :/')
 
-@click.command()
+@cli.command()
 @click.option('--idbank', default=0,
     help="""
     A unique series ID used by INSEE to identify data.
@@ -46,12 +53,17 @@ def ask():
     Whether you want the output to go to the console or to be stored in a file,
     Any value other than 'cli' will be taken as the path+name of the file, defaulting to csv storage.
     You can still set the 'clifmt' if your output is cli, it will simply change the way the result is displayed
-    """, , type=click.STRING)
+    """, type=click.STRING)
 @click.option('--clifmt', default="df", help='What format to print in the terminal', type=click.STRING)
 @click.option('--format', default="csv", help='Whether to store the result as csv, json or pickle', type=click.STRING)
 @click.option('--sep', default=";", help='If output is csv, separator to use.', type=click.STRING)
-@click.option('--ask', is_flag=True, default=False, 'Whether to run the `ask` command if you input wrong information.')
+@click.option('--ask', is_flag=True, default=False, help='Whether to run the `ask` command if you input wrong information.')
 def fetch(idbank, mod, out, clifmt, format, sep, ask):
+    """
+    This script will fetch the specified series using the INSEE BDM service using 2022 codes.
+    Returns data either as csv, json or pickle for storage, or as dataframe or json for display.
+    For more information: https://api.insee.fr/catalogue/site/themes/wso2/subthemes/insee/pages/item-info.jag?name=BDM&version=V1&provider=insee)
+    """
     if idbank != '0':
         if idb_exists(idbank):
             obj = process_xml_output(insee_bdm_get(idbank))
@@ -71,7 +83,9 @@ def fetch(idbank, mod, out, clifmt, format, sep, ask):
             if not ask:
                 click.secho('NB: use either the `ask` command or the --ask flag if you want suggestions :)', fg='green', bold=True, err=True)
             else:
-
+                matches = find_closest_idbank(idbank)
+                click.secho('NB: Here are the closest 5 idbanks, use `ask` to figure what they are ;)', fg='green', bold=True, err=True)
+                click.echo(matches)
 
 cli.add_command(fetch)
 cli.add_command(ask)

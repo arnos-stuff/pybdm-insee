@@ -15,7 +15,7 @@ click = "^8.1.3"
 colorama = "^0.4.6"
 
 [tool.poetry.scripts]
-insee = "pybdm_insee:main"
+insee = "pybdm_insee.main:cli"
 
 
 [build-system]

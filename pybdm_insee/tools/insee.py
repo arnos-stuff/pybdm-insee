@@ -5,6 +5,7 @@ from functools import cache
 from lxml import etree
 import pandas as pd
 import requests as rq
+import difflib as dfl
 
 
 DATA_PATH = files("pybdm_insee").parent.joinpath("data/")\
@@ -37,6 +38,9 @@ def idb_exists(_idbank : str):
     idb = _insee_data().get("idbank")
     return idb[idb.idbank.apply(lambda v : str(v).zfill(9)) == _fidbank].any().any()
 
+def find_closest_idbank(idbank : str, n=5):
+    idb = _insee_data().get("idbank")
+    dfl.get_close_matches(idbank, idb.idbank.unique().tolist(), n=n)
 
 def insee_get_access_token():
     r = rq.post(
