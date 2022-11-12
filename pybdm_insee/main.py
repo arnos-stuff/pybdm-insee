@@ -1,12 +1,17 @@
 import click
 import json
+import sys
 import pandas as pd
+from subprocess import call
+from importlib.util import find_spec
 
 from pybdm_insee.tools.insee import (
     process_xml_output,
     insee_bdm_get, process_xml_output,
     _insee_data, idb_exists, find_closest_idbank
 )
+
+from pybdm_insee.installs.poetry_install import run_poetry_install
 
 
 obj = process_xml_output(insee_bdm_get("001656506"))
@@ -32,6 +37,20 @@ def cli():
 @cli.command()
 def ask():
     click.echo('Nothing :/')
+
+@cli.command()
+@click.argument('pkg')
+def install(pkg):
+    click.secho(f'Attempting to install package {pkg}...', fg="blue")
+    if pkg == 'spacy':
+        try:
+            # cmdline = ["python", "-m", "spacy", "download", "en_core_web_md"]
+            # call(cmdline, shell=True, executable=sys.executable)
+            from spacy.cli.download import download
+            download("en_core_web_md")
+        except Exception as e:
+            click.secho(f"Please install Poetry at https://python-poetry.org/docs/", fg="yellow", bold=True, err=True)
+            raise e
 
 @cli.command()
 @click.option('--idbank', default=0,

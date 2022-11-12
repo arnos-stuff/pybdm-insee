@@ -1,12 +1,13 @@
 [tool.poetry]
 name = "pybdm-insee"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 authors = ["Arno's Stuff <bcda0276@gmail.com>"]
 readme = "README.md"
 packages = [{include = "pybdm_insee"}]
 include = [
-    {path = "data"}
+    "./data/202211_correspondance_idbank_dimension.csv",
+    "./data/202211_liste_variables_modalites.csv"
 ]
 
 [tool.poetry.dependencies]
@@ -16,10 +17,14 @@ requests = "^2.28.1"
 lxml = "^4.9.1"
 click = "^8.1.3"
 colorama = "^0.4.6"
+spacy = {version = "^3.4.3", optional = true}
 
 [tool.poetry.scripts]
 insee = "pybdm_insee.main:cli"
 
+[tool.poetry.extras]
+caching = ["spacy"]
+spacy = ["spacy"]
 
 [[tool.poetry.source]]
 name = "py"
