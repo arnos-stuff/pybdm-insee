@@ -1,13 +1,15 @@
 [tool.poetry]
 name = "pybdm-insee"
-version = "0.1.1"
+version = "0.1.4"
 description = ""
 authors = ["Arno's Stuff <bcda0276@gmail.com>"]
 readme = "README.md"
 packages = [{include = "pybdm_insee"}]
 include = [
-    "./data/202211_correspondance_idbank_dimension.csv",
-    "./data/202211_liste_variables_modalites.csv"
+    "./data/202211_correspondance_idbank_dimension.csv.gz",
+    "./data/202211_liste_variables_modalites.csv.gz",
+    "naf2008-listes-completes-5-niveaux.csvinsee_modalites_2022.csv.gz",
+    "./data/naf2008-listes-completes-5-niveaux.csv.gz"
 ]
 
 [tool.poetry.dependencies]
